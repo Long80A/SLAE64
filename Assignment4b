@@ -6,7 +6,7 @@
 
 ;Compile & Run:    nasm -f elf64 -o decoder.o decoder.nasm
 ;                  ld -o decoder decoder.o
-;                  ./decoder.nasm
+
 ;SLAE64-1379
 
 global _start 
